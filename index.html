@@ -891,6 +891,7 @@
 					pieceDiv.appendChild(cateDiv);
 					pieceDiv.appendChild(ratingDiv);
 					pieceDiv.onclick = function(){
+						zoomMap(new google.maps.LatLng(infoArray[1],infoArray[2]));
 						updatePic(photoRefer, path);
 						$('#reviewPanel').html("");
 						document.getElementById('reviewPanel').style.background ='url(img/loading.gif) no-repeat center center';
@@ -905,6 +906,7 @@
 		}
 
 	}
+	
 	function getDetailId(name){
 		var id;
 		var parseName = name.toString().trim().replace(/ /g,"%20");
@@ -988,7 +990,6 @@
     	img.height = height;
     	img.width = width;
 	}
-
 	function timeStamp2String(timestamp){
     	var now=new Date(); 
     	var time=new Date();
@@ -1008,7 +1009,6 @@
     		return (time.getHours()<10?"0"+time.getHours():time.getHours())+":"
     	+(time.getMinutes()<10?"0"+time.getMinutes():time.getMinutes());
     };
-	
 	function updatePic(refer, path){
 
 		if(path == "img/icon_small.png"){
@@ -1040,7 +1040,6 @@
         	}
         });
 	}
-
 	//HTTP GET method
     var HttpClient = function() {
     	this.get = function(aUrl, aCallback) {
@@ -1158,6 +1157,7 @@ async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0rPWPoegBqb5
 </script>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <script>
+	var markers;
 	function initMap() {
 		var map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 4,
@@ -1169,17 +1169,32 @@ async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0rPWPoegBqb5
   		// Note: The code uses the JavaScript Array.prototype.map() method to
   		// create an array of markers based on a given "locations" array.
   		// The map() method here has nothing to do with the Google Maps API.
-  		var markers = locations.map(function(location, i) {
+  		markers = locations.map(function(location, i) {
   		return new google.maps.Marker({
   			position: location,
   			label: labels[i % labels.length]
   		});
   	});
-  	// Add a marker clusterer to manage the markers.
-  	var markerCluster = new MarkerClusterer(map, markers,
-  		{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+  		// Add a marker clusterer to manage the markers.
+  		var markerCluster = new MarkerClusterer(map, markers,
+  			{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 	}
-	
+	function zoomMap(coordinate){
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 15,
+			center: coordinate
+		});
+		markers = locations.map(function(location, i) {
+  		return new google.maps.Marker({
+  			position: location,
+  			label: labels[i % labels.length]
+  		});
+  	});
+  		// Add a marker clusterer to manage the markers.
+  		var markerCluster = new MarkerClusterer(map, markers,
+  			{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+	}
+
 </script>
 
 </html>
