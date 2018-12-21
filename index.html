@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Final Project - Where4Fun by Hao.Q & Yucheng.Q - Cloud Computing Fall 2018</title>
+	<script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script>
+	<script type="text/javascript" src="lib/CryptoJS/rollups/hmac-sha256.js"></script>
+	<script type="text/javascript" src="lib/CryptoJS/rollups/sha256.js"></script>
+	<script type="text/javascript" src="lib/CryptoJS/components/hmac.js"></script>
+	<script type="text/javascript" src="lib/CryptoJS/components/enc-base64.js"></script>
+	<script type="text/javascript" src="lib/url-template/url-template.js"></script>
+	<script type="text/javascript" src="lib/apiGatewayCore/sigV4Client.js"></script>
+	<script type="text/javascript" src="lib/apiGatewayCore/apiGatewayClient.js"></script>
+	<script type="text/javascript" src="lib/apiGatewayCore/simpleHttpClient.js"></script>
+	<script type="text/javascript" src="lib/apiGatewayCore/utils.js"></script>
+	<script type="text/javascript" src="apigClient.js"></script>
+	<script src='js/jquery.min.js'></script>
+	<style language="text/css">
+
+		.div1{
+        text-align: center
+		}
+
+		input#wisdom {
+			padding: 4px;
+			font-size: 1em;
+			width: 400px
+		}
+
+		input::placeholder {
+			color: #ccc;
+			font-style: italic;
+		}
+
+		p.userRequest {
+			margin: 4px;
+			padding: 4px 10px 4px 10px;
+			border-radius: 4px;
+			min-width: 50%;
+			max-width: 85%;
+			float: left;
+			background-color: #7d7;
+		}
+
+		p.requestTime {
+			margin: 0px;
+			padding: 4px 10px 4px 10px;
+			border-radius: 4px;
+			min-width: 50%;
+			max-width: 85%;
+			font-size: 0.5em;
+			float: left;
+		}
+
+		p.Response {
+			margin: 4px;
+			padding: 4px 10px 4px 10px;
+			border-radius: 4px;
+			text-align: right;
+			min-width: 50%;
+			max-width: 85%;
+			float: right;
+			background-color: #bbf;
+			font-style: italic;
+		}
+
+		p.responseTime {
+			margin: 0px;
+			padding: 4px 10px 4px 10px;
+			border-radius: 4px;
+			text-align: right;
+			min-width: 50%;
+			max-width: 85%;
+			font-size: 0.5em;
+			float: right;
+		}
+		p.Error {
+			margin: 4px;
+			padding: 4px 10px 4px 10px;
+			border-radius: 4px;
+			text-align: right;
+			min-width: 50%;
+			max-width: 85%;
+			float: right;
+			background-color: #f77;
+		}
+		.b{
+			position:fixed;
+			top:0;
+			bottom:0;
+			left:0;
+			right:0;
+			background-color: #fff;
+			opacity: 0.7;
+			display: none;
+		}
+		.c{
+			position:fixed;
+			top: 10%;
+			bottom:0;
+			left:0;
+			right:0;
+			width:600px;
+			height:500px;
+			left: 26%;
+			text-align: center;
+			background-color: aliceblue;
+			display: none;
+		}
+		.v{
+			display: inline-block;
+		}
+		ul {
+		overflow: hidden;
+		}
+		ul li {
+			float: left;
+			list-style: none;
+			width: 27px;
+			height: 27px;
+			background: url(img/star.gif)
+		}
+		ul li a {
+			display: block;
+			width: 100%;
+			padding-top: 27px;
+			overflow: hidden;
+		}
+		ul li.light {
+			background-position: 0 -29px;
+		}
+		.dialog{width:200px;height:200px;border:solid 1px #000;position:absolute;right:10px;top:100px; line-height:200px;text-align:center;display:none}
+		.RatingBox {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			margin:0 auto;
+			width: 600px;
+			height: 500px;
+			border: 1px;
+			border-radius:10px;
+			text-align: left;
+			background: #FFDAB9;
+		}
+		.RatingBoxTitle{
+			background: #FFDAB9;
+			box-sizing: border-box;	
+			margin-left: 32px;
+			margin-right: 32px;
+			margin-bottom: 32px;
+			height: 70px;
+			flex-direction: column;
+			vertical-align: middle;
+			font-size: 90%;
+			font-family: cursive;
+		}
+		.RatingBoxFooter{
+			width: 100%;
+			position: absolute;
+			border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			background: #FFDAB9;
+			bottom: 0;
+			left: 0;
+			height: 60px;
+		}
+		.ContinueButton{
+			width: 95%; height: 80%;margin:0 auto;display: inline-block;border: 0px;background: #DCDCDC;border-radius:5px;font-size: 150%;font-family: monospace; text-align: center;vertical-align: middle;position: absolute;top: 10%;left: 2.5%;
+		}
+		.RatingItem{
+			position: relative;
+			width: 100%;
+			height: 100px;
+		}
+		.RatingPic{
+			border-radius: 10px;
+			position: absolute;
+			width: 80px;
+			height: 80px;
+			margin-top: 10px;
+			margin-left: 100px;
+		}
+		.RatingName{
+			text-align: left;
+			position: absolute;
+			width: 80px;
+			height: 80px;
+			margin-top: 5px;
+			margin-left: 230px;
+		}
+		.RatingStars{
+			position: absolute;
+			width: 200px;
+			height: 80px;
+			margin-top: 15px;
+			margin-left: 330px;
+		}
+		#map{
+			width: 850px;
+			height: 435px;
+			margin-left: 415px;
+			background: #fee;
+		}
+		.RecPanelClass{
+			width: 412px; max-height: 300px;margin-top: 0px;background: #7EC0EE;overflow-y: scroll;
+			float: left;
+		}
+
+		.RecPiece{
+			margin: 4px;
+			padding: 4px 10px 4px 10px;
+			border-radius: 4px;
+			width: 365px;
+			height: 50px;
+			float: left;
+			background-color: #F8F8FF;
+			cursor:pointer;
+		}
+		.RecPic{
+			float:left;
+			width: 50px;
+			height: 50px;
+			margin-left: 0px;
+			margin-top: 0px;
+		}
+		.RecName{
+			font-family: Comic Sans MS;
+			float: left;
+			font-size: 120%;
+			width: 250px;
+			height: 28px;
+			max-height: 28px;
+			margin-left: 10px;
+			overflow:hidden;  
+		}
+		.RecCate{
+			font-style: italic;
+			float:left;
+			margin-top: 0px;
+			width: 250px;
+			height: 22px;
+			max-height: 22px;
+			margin-left: 10px;
+			overflow:hidden;  
+		}
+		.RecRating{
+			color: #EE4000;
+			font-size: 150%;
+			float: left;
+			margin-top: -20px;
+			display: inline-block;
+			width: 40px;
+			height: 50px;
+			margin-left: 10px;
+			font-family: Georgia;
+			text-align: center;
+			vertical-align: middle;
+		}
+		.DetailPanelClass{
+			width: 850px; height: 300px; background: #fef;float: left;
+		}
+		.DetailPic{
+			float: left;
+			width: 300px;
+			height: 300px;
+			background: #fff;
+		}
+		.DetailReview{
+			float: left;
+			width: 550px;
+			height: 300px;
+			
+		}
+		.ReviewPanel{
+			float: left;
+			width: 550px;
+			height: 260px;
+			background: #DCDCDC;
+			overflow-y: scroll;
+		}
+		.ReviewPiece{
+			margin: 4px;
+			border-radius: 4px;
+			width: 520px;
+			height: auto;
+			float: left;
+			background-color: #F8F8FF;
+		}
+		.ReviewIcon{
+			float: left;
+			width: 70px;
+			height: 70px;
+			margin-left: 20px;
+			margin-top: 10px;
+	
+		}
+		.ReviewName{
+			font-family: Comic Sans MS;
+			font-size: 130%;
+			float: left;
+			width: 300px;
+			height: 30px;
+			margin-left: 20px;
+			margin-top: 10px;
+			overflow:hidden;  
+		}
+		.ReviewTime{
+			font-size: 100%;
+			float: left;
+			width: 300px;
+			height: 30px;
+			margin-left: 20px;
+			margin-top: 10px;
+		}
+		.ReviewRate{
+			float: left;
+			margin-left: 20px;
+			margin-top: -20px;
+			width: 70px;
+			height: 70px;
+			font-family: Georgia;
+			text-align: center;
+			vertical-align: middle;
+			color: #EE4000;
+			font-size: 200%;
+		}
+		.ReviewText{
+			font-size: 110%;
+			margin-top: 10px;
+			margin-left: 20px;
+			width: 480px;
+			height: auto;
+			float: left;
+			background: #eee;
+			word-break:all;
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+
+<body style="position: absolute;">
+	<!-- Chatbot panel -->	
+	<div id="ChatbotPanel" style="position: absolute;width: 500px">
+		<div style="width: 420px; height: 85px; background-image: url(img/title.png);">
+		</div>
+		<div id="conversation" style="width: 82%; height: 315px; border: 1px solid #ccc; background-image: url(img/icon.png); opacity: 0.7; overflow: scroll"></div>
+			<form id="chatform" style="height: 50px; width: 80%; margin-top: 0px;" onsubmit="return pushChat();">
+				<input type="text" id="wisdom" size="80" value="" placeholder="What kind of places do you want today?">
+			</form>
+	</div>
+	<!-- GoogleMap Panel -->	
+	<div id="map"></div>
+	<!-- Initialization Rating Panel -->
+	<div class="b"></div>
+	<!-- The rating box div -->
+	<div class="c">
+		<button onclick="upload()">CLOSE</button>
+		<div class="RatingBox">
+		<div class="RatingBoxTitle">
+			<h2 style="font-size: 160%; font-family: Comic Sans MS">New to Where4Fun?</h2>
+			<p style="font-size: 130%">Please tell us your interests...</p>
+		</div>
+		<div class="RatingGrid" style="width: 100%;height: 68%;background: #fff;overflow-y: scroll;">
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1593592833,2529249729&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Gym</h2></div>
+				<div class="RatingStars">
+					<ul id="Star1">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3363761964,1952854212&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Ulta Beauty</h2></div>
+				<div class="RatingStars">
+					<ul id="Star2">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=554121802,2253374887&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Steak 'n Shake</h2></div>
+				<div class="RatingStars">
+					<ul id="Star3">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4187945479,3913729253&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">GameStop</h2></div>
+				<div class="RatingStars">
+					<ul id="Star4">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1057046913,2381821689&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Shopping Mall</h2></div>
+				<div class="RatingStars">
+					<ul id="Star5">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2461079983,690739524&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;"> Luxury Nails Bar </h2></div>
+				<div class="RatingStars">
+					<ul id="Star6">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3250900987,1160107705&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Creative Cooking School</h2></div>
+				<div class="RatingStars">
+					<ul id="Star7">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3594668216,1215299661&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Inizio Salon</h2></div>
+				<div class="RatingStars">
+					<ul id="Star8">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3106992300,1546390831&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Message</h2></div>
+				<div class="RatingStars">
+					<ul id="Star9">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3385116332,2390887328&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Starbucks</h2></div>
+				<div class="RatingStars">
+					<ul id="Star10">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="RatingBoxFooter">
+			<button id="continueBtn" onclick="upload()"class="ContinueButton" disabled="true">CONTINUE</button>
+		</div></div></div>
+	<!-- The rating box div -->
+	<div id='RecPanel' class="RecPanelClass">
+
+		<div id="RecList" class="RecPiece">
+			<div class="RecPic"></div>
+			<div class="RecName">MacDonalds'</div>
+			<div class="RecCate">Food</div>
+			<div class="RecRating">5.5</div>
+		</div></div>
+	<div id='DetailPanel' class="DetailPanelClass">
+		<div class="DetailPic">
+			<div style="width: 300px; height: 40px;background: url(img/gallery.png) no-repeat center center #008CFF;"></div>
+			<div id="detailPic" style="width: 250px;height: 250px; margin-top: 10px; margin-left: 25px;"></div>
+		</div>
+		<div class="DetailReview">
+			<div style="width: 550px; height: 40px;background: url(img/reviews.png) no-repeat center center #FF375B;"></div>
+			<div id = "reviewPanel" class="ReviewPanel" >
+				<div class="ReviewPiece">
+					<div class="ReviewIcon" style="background: url(img/jeff.jpg);"></div>
+					<div class="ReviewName">Jeff Bezos</div>
+					<div class="ReviewTime">Just now</div>
+					<div class="ReviewRate">10</div>
+					<div class="ReviewText">Welcome to Where4Fun. This is where you're gonna find your ideal places to have fun! Enjoy!</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+<!-- script for initialization rating page -->
+<script>
+	continueBtn.onmouseover = function(){
+		document.getElementById('continueBtn').style.backgroundColor = "#CD2626";
+		document.getElementById('continueBtn').style.color = '#fff';
+		
+	}
+	continueBtn.onmouseout = function(){
+		document.getElementById('continueBtn').style.backgroundColor = "#EE3B3B";
+		document.getElementById('continueBtn').style.color = '#fff';
+	}
+
+	var num1=finalnum1 = tempnum1= 0;
+	var num2=finalnum2 = tempnum2= 0;
+	var num3=finalnum3 = tempnum3= 0;
+	var num4=finalnum4 = tempnum4= 0;
+	var num5=finalnum5 = tempnum5= 0;
+	var num6=finalnum6 = tempnum6= 0;
+	var num7=finalnum7 = tempnum7= 0;
+	var num8=finalnum8 = tempnum8= 0;
+	var num9=finalnum9 = tempnum9= 0;
+	var num10=finalnum10 = tempnum10= 0;
+
+	var resultScore = new Array();
+
+	var lis1 = document.getElementById("Star1").getElementsByTagName("li");
+	var lis2 = document.getElementById("Star2").getElementsByTagName("li");
+	var lis3 = document.getElementById("Star3").getElementsByTagName("li");
+	var lis4 = document.getElementById("Star4").getElementsByTagName("li");
+	var lis5 = document.getElementById("Star5").getElementsByTagName("li");
+	var lis6 = document.getElementById("Star6").getElementsByTagName("li");
+	var lis7 = document.getElementById("Star7").getElementsByTagName("li");
+	var lis8 = document.getElementById("Star8").getElementsByTagName("li");
+	var lis9 = document.getElementById("Star9").getElementsByTagName("li");
+	var lis10 = document.getElementById("Star10").getElementsByTagName("li");
+
+	function fnShow1(num1) {
+ 		finalnum1= num1 || tempnum1;
+ 		for (var i = 0; i < lis1.length; i++) {
+  			lis1[i].className = i < finalnum1? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis1.length; i++) {
+			lis1[i - 1].index = i;
+ 			lis1[i - 1].onmouseover = function() { 
+  			fnShow1(this.index);
+		}	
+ 		lis1[i - 1].onmouseout = function() { 
+  			fnShow1(0);
+		}
+ 		lis1[i - 1].onclick = function() {
+ 			tempnum1 = this.index;
+ 			console.log('tempnum1=' + tempnum1);
+ 			resultScore[1] = tempnum1;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow2(num2) {
+ 		finalnum2= num2 || tempnum2;
+ 		for (var i = 0; i < lis2.length; i++) {
+  			lis2[i].className = i < finalnum2? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis2.length; i++) {
+			lis2[i - 1].index = i;
+ 			lis2[i - 1].onmouseover = function() { 
+  			fnShow2(this.index);
+		}	
+ 		lis2[i - 1].onmouseout = function() {
+  			fnShow2(0);
+		}
+ 		lis2[i - 1].onclick = function() { 
+ 			tempnum2 = this.index;
+ 			console.log('tempnum2=' + tempnum2);
+ 			resultScore[2] = tempnum2;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow3(num3) {
+ 		finalnum3= num3 || tempnum3;
+ 		for (var i = 0; i < lis3.length; i++) {
+  			lis3[i].className = i < finalnum3? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis3.length; i++) {
+			lis3[i - 1].index = i;
+ 			lis3[i - 1].onmouseover = function() {
+  			fnShow3(this.index);
+		}	
+ 		lis3[i - 1].onmouseout = function() {
+  			fnShow3(0);
+		}
+ 		lis3[i - 1].onclick = function() {
+ 			tempnum3 = this.index;
+ 			console.log('tempnum3=' + tempnum3);
+ 			resultScore[3] = tempnum3;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow4(num4) {
+ 		finalnum4= num4 || tempnum4;
+ 		for (var i = 0; i < lis4.length; i++) {
+  			lis4[i].className = i < finalnum4? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis4.length; i++) {
+			lis4[i - 1].index = i;
+ 			lis4[i - 1].onmouseover = function() {
+  			fnShow4(this.index);
+		}	
+ 		lis4[i - 1].onmouseout = function() {
+  			fnShow4(0);
+		}
+ 		lis4[i - 1].onclick = function() {
+ 			tempnum4 = this.index;
+ 			console.log('tempnum4=' + tempnum4);
+ 			resultScore[4] = tempnum4;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow5(num5) {
+ 		finalnum5= num5 || tempnum5;
+ 		for (var i = 0; i < lis5.length; i++) {
+  			lis5[i].className = i < finalnum5? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis5.length; i++) {
+			lis5[i - 1].index = i;
+ 			lis5[i - 1].onmouseover = function() {
+  			fnShow5(this.index);
+		}	
+ 		lis5[i - 1].onmouseout = function() {
+  			fnShow5(0);
+		}
+ 		lis5[i - 1].onclick = function() { 
+ 			tempnum5 = this.index;
+ 			console.log('tempnum5=' + tempnum5);
+ 			resultScore[5] = tempnum5;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow6(num6) {
+ 		finalnum6= num6 || tempnum6;
+ 		for (var i = 0; i < lis6.length; i++) {
+  			lis6[i].className = i < finalnum6? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis6.length; i++) {
+			lis6[i - 1].index = i;
+ 			lis6[i - 1].onmouseover = function() {
+  			fnShow6(this.index);
+		}	
+ 		lis6[i - 1].onmouseout = function() {
+  			fnShow6(0);
+		}
+ 		lis6[i - 1].onclick = function() {
+ 			tempnum6 = this.index;
+ 			console.log('tempnum6=' + tempnum6);
+ 			resultScore[6] = tempnum6;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow7(num7) {
+ 		finalnum7= num7 || tempnum7;
+ 		for (var i = 0; i < lis7.length; i++) {
+  			lis7[i].className = i < finalnum7? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis7.length; i++) {
+			lis7[i - 1].index = i;
+ 			lis7[i - 1].onmouseover = function() {
+  			fnShow7(this.index);
+		}	
+ 		lis7[i - 1].onmouseout = function() {
+  			fnShow7(0);
+		}
+ 		lis7[i - 1].onclick = function() {
+ 			tempnum7 = this.index;
+ 			console.log('tempnum7=' + tempnum7);
+ 			resultScore[7] = tempnum7;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow8(num8) {
+ 		finalnum8= num8 || tempnum8;
+ 		for (var i = 0; i < lis8.length; i++) {
+  			lis8[i].className = i < finalnum8? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis8.length; i++) {
+			lis8[i - 1].index = i;
+ 			lis8[i - 1].onmouseover = function() { 
+  			fnShow8(this.index);
+		}	
+ 		lis8[i - 1].onmouseout = function() { 
+  			fnShow8(0);
+		}
+ 		lis8[i - 1].onclick = function() {
+ 			tempnum8 = this.index;
+ 			console.log('tempnum8=' + tempnum8);
+ 			resultScore[8] = tempnum8;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow9(num9) {
+ 		finalnum9= num9 || tempnum9;
+ 		for (var i = 0; i < lis9.length; i++) {
+  			lis9[i].className = i < finalnum9? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis9.length; i++) {
+			lis9[i - 1].index = i;
+ 			lis9[i - 1].onmouseover = function() {
+  			fnShow9(this.index);
+		}	
+ 		lis9[i - 1].onmouseout = function() {
+  			fnShow9(0);
+		}
+ 		lis9[i - 1].onclick = function() {
+ 			tempnum9 = this.index;
+ 			console.log('tempnum9=' + tempnum9);
+ 			resultScore[9] = tempnum9;
+ 			btnContinue();
+ 		}
+	}
+	function fnShow10(num10) {
+ 		finalnum10= num10 || tempnum10;
+ 		for (var i = 0; i < lis10.length; i++) {
+  			lis10[i].className = i < finalnum10? "light" : "";
+		}
+		}
+		for (var i = 1; i <= lis10.length; i++) {
+			lis10[i - 1].index = i;
+ 			lis10[i - 1].onmouseover = function() {
+  			fnShow10(this.index);
+		}	
+ 		lis10[i - 1].onmouseout = function() { 
+  			fnShow10(0);
+		}
+ 		lis10[i - 1].onclick = function() {
+ 			tempnum10 = this.index;
+ 			console.log('tempnum10=' + tempnum10);
+ 			resultScore[10] = tempnum10;
+ 			btnContinue();
+ 		}
+	}
+	
+	function btnContinue(){
+		if(tempnum1 != 0 &&tempnum2 != 0 &&tempnum3 != 0 &&tempnum4 != 0 &&tempnum5 != 0 &&tempnum6 != 0 &&tempnum7 != 0 &&tempnum8 != 0 &&tempnum9 != 0 &&tempnum10 != 0 ){
+			$('#continueBtn').attr("disabled", false);
+			document.getElementById('continueBtn').style.backgroundColor = "#EE3B3B";
+			document.getElementById('continueBtn').style.color = '#fff';
+		}
+	}
+</script>
+<!-- script for initialization rating upload/post to AWS-->
+<script type="text/javascript">
+	//Initailize the array of results
+	var resultArray;
+	var ele=document.getElementsByClassName("b")[0];
+	var ele2=document.getElementsByClassName("c")[0];
+	//Suppose initialization always occur
+	ele.classList.add("v");
+	ele2.classList.add("v");
+	function upload() {
+		//Close the initialization page
+		ele.classList.remove("v");
+		ele2.classList.remove("v");
+		//Upload data to AWS
+		var apigClient = apigClientFactory.newClient({
+		});
+		//Construct the POST content
+		var initData = new Array();
+		var idTag = new Array();
+		idTag[0] = 0;
+		idTag[1] = 11914;
+		idTag[2] = 991;
+		idTag[3] = 992;
+		idTag[4] = 14608;
+		idTag[5] = 14486;
+		idTag[6] = 930;
+		idTag[7] = 996;
+		idTag[8] = 997;
+		idTag[9] = 11956;
+		idTag[10] = 999;
+		for(var i = 0; i < 10; i++){
+			var temp = new Array();
+			temp[0] = -1;
+			temp[1] = idTag[i+1];
+			temp[2] = resultScore[i+1];
+			initData[i] = temp;
+		}
+		//Test the initData
+		console.log(initData);
+		var body = {
+			"arg": initData
+		};
+		//POST the initData
+		apigClient.getRecommendPost(null, body).then(function(result){
+        		//a success callback
+        		resultArray = result.data;
+        		console.log(resultArray);
+        		updateRecList();
+			}).catch( function(result){
+        		//an error callback
+        		// console.log("Error!" + result);
+    	});
+	}
+</script>
+<!-- script for updating recommendation list -->
+<script type="text/javascript">
+	//initialize the Google Map locations and labels
+	var locations;
+	var labels;
+	var test;
+	locations = [
+		{lat: 40.694034, lng: -73.987199},
+	]
+	function updateRecList(){
+		var listSize = resultArray.length;
+		//set array for empty response tuples
+		var temp = new Array();
+		temp[0] = 'Unknown';
+		temp[3] = 'N/A'
+		//find the panel to update
+		var fatherDiv = document.getElementById('RecPanel');
+		//clear current panel
+		$('#RecPanel').html("");
+		//clear the locations array
+		locations = [];
+		for(var i = 0; i < listSize; i++){
+			(function(i){
+				var current = resultArray[i];
+				var infoArray = current[0] == null ? temp : current[0];
+				getPhotoRefer(infoArray[0], function(){
+					log(i);
+					var photoRefer = test;
+					var path;
+					var rating = current[1];
+					var nameDiv = document.createElement('div');
+					var picDiv = document.createElement('div');
+					var cateDiv = document.createElement('div');
+					var ratingDiv = document.createElement('div');
+					var pieceDiv = document.createElement('div');
+					nameDiv.className = "RecName";
+					picDiv.className = "RecPic";
+					cateDiv.className = "RecCate";
+					ratingDiv.className = "RecRating";
+					pieceDiv.className = "RecPiece";
+					if(photoRefer == "no pic"){
+						path = "img/icon_small.png";
+					}else{
+						path = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=50&photoreference="+photoRefer+"&key=AIzaSyDls0UA_hCNEbgwc_eoP-QL_pCm1NKwfSc";
+					}
+					picDiv.style.background='url('+path+')';
+					nameDiv.innerHTML = infoArray[0];
+					cateDiv.innerHTML = infoArray[3];
+					//set location on map
+					locations[i] = new google.maps.LatLng(infoArray[1],infoArray[2]);
+					labels[i] = infoArray[0];
+					ratingDiv.innerHTML = rating.toString().substr(0, 3);
+					pieceDiv.appendChild(picDiv);
+					pieceDiv.appendChild(nameDiv);
+					pieceDiv.appendChild(cateDiv);
+					pieceDiv.appendChild(ratingDiv);
+					pieceDiv.onclick = function(){
+						updatePic(photoRefer, path);
+						$('#reviewPanel').html("");
+						document.getElementById('reviewPanel').style.background ='url(img/loading.gif) no-repeat center center';
+						getDetailId(infoArray[0]);
+					}
+					fatherDiv.appendChild(pieceDiv);
+					log(photoRefer);
+					// log(locations);
+					initMap();
+			});
+			})(i);
+		}
+
+	}
+	function getDetailId(name){
+		var id;
+		var parseName = name.toString().trim().replace(/ /g,"%20");
+		var url = "https://cors.io/?https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input="+parseName+"&inputtype=textquery&fields=place_id&key=AIzaSyDls0UA_hCNEbgwc_eoP-QL_pCm1NKwfSc ";
+		var client = new HttpClient();
+        client.get(url, function(response){
+        	var responseJSON = JSON.parse(response);
+        	// log(responseJSON);
+        	if(responseJSON.status == "OK"){
+        		id = responseJSON.candidates[0].place_id;
+        		getReview(id);
+        	}else{
+        		id = 0;
+        		getReview(id);
+        	}
+        });
+	}
+	function getReview(id){
+		log(id);
+		if(id != 0){
+			var url = "https://cors.io/?https://maps.googleapis.com/maps/api/place/details/json?placeid="+id+"&fields=reviews&key=AIzaSyDls0UA_hCNEbgwc_eoP-QL_pCm1NKwfSc";
+			var client = new HttpClient();
+			client.get(url, function(response){
+				var responseJSON = JSON.parse(response);
+        	// log(responseJSON);
+        		if(responseJSON.status == "OK"){
+        			updateReview(responseJSON.result.reviews);
+        		}else{
+        			alert("An unexpected error occurred while fetching reviews!");
+        		}
+        	});
+		}else{
+			$('#reviewPanel').html("");
+			document.getElementById('reviewPanel').style.background ='';
+			var pic1 = "img/jeff.jpg";
+			log('unknown');
+			document.getElementById('reviewPanel').innerHTML = "<div class='ReviewPiece'><div class='ReviewIcon' style='background: url(img/jeff.jpg);''></div><div class='ReviewName'>Jeff Bezos</div><div class='ReviewTime'>just now</div><div class='ReviewRate'>0_0</div><div class='ReviewText'>Sorry, no review results can be shown, please try other ones! Thank you.</div></div>";
+		}
+	}
+	function updateReview(response){
+		//clear current panel
+		$('#reviewPanel').html("");
+		document.getElementById('reviewPanel').style.background ='';
+		log(response);
+		for(var i = 0; i < response.length; i++){
+			var name = response[i].author_name;
+			var text = response[i].text;
+			var icon = response[i].profile_photo_url;
+			var rating = response[i].rating;
+			var time = timeStamp2String(response[i].time);
+
+			var parentDiv = document.getElementById('reviewPanel');
+			var reviewDiv = document.createElement('div');
+			var nameDiv = document.createElement('div');
+			var iconDiv = document.createElement('div');
+			var timeDiv = document.createElement('div');
+			var ratingDiv = document.createElement('div');
+			var textDiv = document.createElement('div');
+
+			nameDiv.className = "ReviewName";
+			reviewDiv.className = "ReviewPiece";
+			iconDiv.className = "ReviewIcon";
+			timeDiv.className = "ReviewTime";
+			ratingDiv.className = "ReviewRate";
+			textDiv.className = "ReviewText";
+
+			nameDiv.innerHTML = name;
+			textDiv.innerHTML = text;
+			ratingDiv.innerHTML = rating+'.0';
+			timeDiv.innerHTML = time;
+			iconDiv.innerHTML = "<img src="+icon+" border='0' height='real_height' width='real_width' onload='resizeImg(this, 70, 70);''>";
+			reviewDiv.appendChild(iconDiv);
+			reviewDiv.appendChild(nameDiv);
+			reviewDiv.appendChild(timeDiv);
+			reviewDiv.appendChild(ratingDiv);
+			reviewDiv.appendChild(textDiv);
+			parentDiv.appendChild(reviewDiv);
+		}
+	}
+	function resizeImg(img, height, width) {
+    	img.height = height;
+    	img.width = width;
+	}
+
+	function timeStamp2String(timestamp){
+    	var now=new Date(); 
+    	var time=new Date();
+    	time.setTime(timestamp*1000);
+    	if(time.getFullYear() != now.getFullYear())
+    		return time.getFullYear()+"-"
+    	+((time.getMonth()+1)<10?"0"+(time.getMonth()+1):(time.getMonth()+1))+"-"
+    	+(time.getDate()<10?"0"+time.getDate():time.getDate())+" "
+    	+(time.getHours()<10?"0"+time.getHours():time.getHours())+":"
+    	+(time.getMinutes()<10?"0"+time.getMinutes():time.getMinutes());
+    	else if(time.getMonth() != now.getMonth() || time.getDate() != now.getDate())
+    		return ((time.getMonth()+1)<10?"0"+(time.getMonth()+1):(time.getMonth()+1))+"-"
+    	+(time.getDate()<10?"0"+time.getDate():time.getDate())+" "
+    	+(time.getHours()<10?"0"+time.getHours():time.getHours())+":"
+    	+(time.getMinutes()<10?"0"+time.getMinutes():time.getMinutes());
+    	else 
+    		return (time.getHours()<10?"0"+time.getHours():time.getHours())+":"
+    	+(time.getMinutes()<10?"0"+time.getMinutes():time.getMinutes());
+    };
+	
+	function updatePic(refer, path){
+
+		if(path == "img/icon_small.png"){
+			path = "img/icon_detail.png"
+		}else{
+			path = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=250&photoreference="+refer+"&key=AIzaSyDls0UA_hCNEbgwc_eoP-QL_pCm1NKwfSc ";
+		}
+		var pic = document.getElementById('detailPic');
+		pic.style.background ='url('+path+') no-repeat center center';
+	}
+	function getPhotoRefer(name, callback){
+		var parseName = name.toString().trim().replace(/ /g,"%20");
+		var url = "https://cors.io/?https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input="+parseName+"&inputtype=textquery&fields=photos&key=AIzaSyDls0UA_hCNEbgwc_eoP-QL_pCm1NKwfSc";
+		console.log(url);
+		var refer;
+		var client = new HttpClient();
+        client.get(url, function(response){
+        	var responseJSON = JSON.parse(response);
+        	// log(responseJSON);
+        	if(responseJSON.status == "OK"){
+        		refer = responseJSON.candidates[0].photos[0].photo_reference;
+        		test = refer;
+        		callback();
+        	}else{
+        		refer = "no pic";
+        		// log(refer);
+        		test = refer;
+        		callback();
+        	}
+        });
+	}
+
+	//HTTP GET method
+    var HttpClient = function() {
+    	this.get = function(aUrl, aCallback) {
+        var anHttpRequest = new XMLHttpRequest();
+        anHttpRequest.onreadystatechange = function() { 
+            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+                aCallback(anHttpRequest.responseText);
+        	}
+
+        anHttpRequest.open( "GET", aUrl, true );            
+        anHttpRequest.send( null );
+    	}
+	}
+	function log(info){
+		console.log(info);
+	}
+
+</script>
+<!-- script for Lex service -->
+<script type="text/javascript">
+	// set the focus to the input box
+	document.getElementById("wisdom").focus();
+		// create a new client with access to API_Key
+		var apigClient = apigClientFactory.newClient({
+		});
+		function pushChat() {
+			// if there is text to be sent...
+			var wisdomText = document.getElementById('wisdom');
+			if (wisdomText && wisdomText.value && wisdomText.value.trim().length > 0) {
+				// disable input to show we're sending it
+				var wisdom = wisdomText.value.trim();
+				wisdomText.placeholder = '';
+				wisdomText.value = '...';
+				wisdomText.locked = true;
+				// get input timestamp
+				var myDate = new Date();
+				var timestamp = myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
+				console.log(timestamp);
+				// print user input on UI.
+				showRequest(wisdom, timestamp);
+
+				// // construct message json section
+				// var message = [
+				// {	"type": "n/a", 
+				// "unstructured":
+				// {"id": "n/a", 
+				// "text": wisdom, 
+				// "timestamp": "n/a"}}
+				// ];
+				// // construct request body
+				// var body = {
+				// 	messages: message
+				// };
+				// // post request and receive response
+				// apigClient.chatbotPost(null, body).then(function(result){
+    //     			//a success callback
+    //     			console.log(result);
+    //     			var obj = JSON.parse(result.data);
+    //     			var responseResult = JSON.stringify(obj.messages[0].unstructured.text);
+    //     			var responseTime = JSON.stringify(obj.messages[0].unstructured.timestamp);
+    //     			console.log(responseTime.replace(/['"]+/g, ''));
+    //     			showResponse(responseResult.replace(/['"]+/g, ''), responseTime.replace(/['"]+/g, ''));
+
+    //     		}).catch( function(result){
+    //     			//an error callback
+    //     			var responseResult = JSON.stringify(result);
+    //     			showError(responseResult);
+    //     			console.log(result);
+    //     		});
+    //     		wisdomText.value = '';
+    //     		wisdomText.locked = false;
+        	}
+			// always cancel form submission
+			return false;
+		}
+
+		function showRequest(daText1, daText2) {
+			var conversationDiv = document.getElementById('conversation');
+			var requestPara = document.createElement("P");
+			var timePara = document.createElement("P");
+			requestPara.className = 'userRequest';
+			timePara.className = 'requestTime';
+			requestPara.appendChild(document.createTextNode(daText1));
+			timePara.appendChild(document.createTextNode(daText2));
+			conversationDiv.appendChild(requestPara);
+			conversationDiv.appendChild(timePara);
+			conversationDiv.scrollTop = conversationDiv.scrollHeight;
+		}
+
+		function showError(daText) {
+			var conversationDiv = document.getElementById('conversation');
+			var errorPara = document.createElement("P");
+			errorPara.className = 'Error';
+			errorPara.appendChild(document.createTextNode(daText));
+			conversationDiv.appendChild(errorPara);
+			conversationDiv.scrollTop = conversationDiv.scrollHeight;
+		}
+
+		function showResponse(daText1, daText2) {
+			var conversationDiv = document.getElementById('conversation');
+			var responsePara = document.createElement("P");
+			var timePara = document.createElement("P");
+			responsePara.className = 'Response';
+			timePara.className = 'responseTime';
+			responsePara.appendChild(document.createTextNode(daText1));
+			timePara.appendChild(document.createTextNode(daText2));
+			conversationDiv.appendChild(responsePara);
+			conversationDiv.appendChild(timePara);
+			conversationDiv.scrollTop = conversationDiv.scrollHeight;
+		}
+	</script>
+<!-- GoogleMap API Script -->
+<script 
+async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0rPWPoegBqb58kXkDIQZOGBk0m5DpI8s&callback=initMap">
+</script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script>
+	function initMap() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 4,
+			center: {lat: 38.998550, lng: -96.609253}
+		});
+  		// Create an array of alphabetical characters used to label the markers.
+  		// labels = ['Tandon'];
+  		// Add some markers to the map.
+  		// Note: The code uses the JavaScript Array.prototype.map() method to
+  		// create an array of markers based on a given "locations" array.
+  		// The map() method here has nothing to do with the Google Maps API.
+  		var markers = locations.map(function(location, i) {
+  		return new google.maps.Marker({
+  			position: location,
+  			label: labels[i % labels.length]
+  		});
+  	});
+  	// Add a marker clusterer to manage the markers.
+  	var markerCluster = new MarkerClusterer(map, markers,
+  		{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+	}
+	
+</script>
+
+</html>

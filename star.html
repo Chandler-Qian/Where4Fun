@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src='js/jquery.min.js'></script>
+	<style>
+	ul {
+		overflow: hidden;
+	}
+	ul li {
+		
+		float: left;
+		list-style: none;
+		width: 27px;
+		height: 27px;
+		background: url(img/star.gif)
+	}
+	ul li a {
+
+		display: block;
+		width: 100%;
+		padding-top: 27px;
+		overflow: hidden;
+	}
+	ul li.light {
+		background-position: 0 -29px;
+	}
+	.dialog{width:200px;height:200px;border:solid 1px #000;position:absolute;right:10px;top:100px; line-height:200px;text-align:center;display:none}
+	.RatingBox {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		margin:0 auto;
+		width: 600px;
+		height: 500px;
+		border: 1px;
+		border-radius:10px;
+  		text-align: left;
+  		background: #fff;
+  	}
+  	.RatingBoxTitle{
+  		background: #fff;
+  		box-sizing: border-box;	
+  		margin-left: 32px;
+  		margin-right: 32px;
+  		margin-bottom: 32px;
+  		height: 70px;
+  		flex-direction: column;
+  		vertical-align: middle;
+  		font-size: 90%;
+  		font-family: cursive;
+  	}
+  	.RatingBoxFooter{
+  		width: 100%;
+        position: absolute;
+        border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+        background: #fff;
+        bottom: 0;
+        left: 0;
+        height: 60px;
+        
+  	}
+  	.ContinueButton{
+  		width: 95%; height: 80%;margin:0 auto;display: inline-block;border: 0px;background: #DCDCDC;border-radius:5px;font-size: 150%;font-family: monospace; text-align: center;vertical-align: middle;position: absolute;top: 10%;left: 2.5%;
+  	}
+  	.RatingItem{
+  		position: relative;
+  		width: 100%;
+  		height: 100px;
+  	}
+  	.RatingPic{
+  		border-radius: 10px;
+  		position: absolute;
+  		width: 80px;
+  		height: 80px;
+  		margin-top: 10px;
+  		margin-left: 100px;
+  	}
+  	.RatingName{
+  		text-align: left;
+  		position: absolute;
+  		width: 80px;
+  		height: 80px;
+  		margin-top: 5px;
+  		margin-left: 230px;
+  	}
+  	.RatingStars{
+  		position: absolute;
+  		width: 200px;
+  		height: 80px;
+  		margin-top: 15px;
+  		margin-left: 330px;
+  	}
+</style>
+</head>
+<body >
+	
+	
+	
+	<div class="RatingBox">
+		<div class="RatingBoxTitle">
+			<h2 style="font-size: 160%; font-family: Comic Sans MS">New to Where4Fun?</h2>
+			<p style="font-size: 130%">Please tell us your interests...</p>
+		</div>
+		<div class="RatingGrid" style="width: 100%;height: 68%;background: #fff;overflow-y: scroll;">
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1593592833,2529249729&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Gym</h2></div>
+				<div class="RatingStars">
+					<ul id="Star1">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3363761964,1952854212&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Ulta Beauty</h2></div>
+				<div class="RatingStars">
+					<ul id="Star2">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=554121802,2253374887&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Steak 'n Shake</h2></div>
+				<div class="RatingStars">
+					<ul id="Star3">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4187945479,3913729253&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">GameStop</h2></div>
+				<div class="RatingStars">
+					<ul id="Star4">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1057046913,2381821689&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Shopping Mall</h2></div>
+				<div class="RatingStars">
+					<ul id="Star5">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2461079983,690739524&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;"> Luxury Nails Bar </h2></div>
+				<div class="RatingStars">
+					<ul id="Star6">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3250900987,1160107705&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Creative Cooking School</h2></div>
+				<div class="RatingStars">
+					<ul id="Star7">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3594668216,1215299661&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Inizio Salon</h2></div>
+				<div class="RatingStars">
+					<ul id="Star8">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3106992300,1546390831&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Message</h2></div>
+				<div class="RatingStars">
+					<ul id="Star9">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="RatingItem">
+				<div class="RatingPic" style="background-image: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3385116332,2390887328&fm=15&gp=0.jpg);"></div>
+				<div class="RatingName"><h2 style="font-size: 100%;font-family: Comic Sans MS;">Starbucks</h2></div>
+				<div class="RatingStars">
+					<ul id="Star10">
+						<li class="light" style=""><a href="javascript:;">1</a></li>
+						<li><a href="javascript:;">2</a></li>
+						<li><a href="javascript:;">3</a></li>
+						<li><a href="javascript:;">4</a></li>
+						<li><a href="javascript:;">5</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			
+		</div>
+		<div class="RatingBoxFooter">
+			<button id="continueBtn" class="ContinueButton" disabled="true">CONTINUE</button>
+		</div>
+	</div>
+
+
+</body>
+<script>
+	continueBtn.onmouseover = function(){
+		document.getElementById('continueBtn').style.backgroundColor = "#CD2626";
+		document.getElementById('continueBtn').style.color = '#fff';
+		
+	}
+	continueBtn.onmouseout = function(){
+		document.getElementById('continueBtn').style.backgroundColor = "#EE3B3B";
+		document.getElementById('continueBtn').style.color = '#fff';
+	}
+
+	var num1=finalnum1 = tempnum1= 0;
+	var num2=finalnum2 = tempnum2= 0;
+	var num3=finalnum3 = tempnum3= 0;
+	var num4=finalnum4 = tempnum4= 0;
+	var num5=finalnum5 = tempnum5= 0;
+	var num6=finalnum6 = tempnum6= 0;
+	var num7=finalnum7 = tempnum7= 0;
+	var num8=finalnum8 = tempnum8= 0;
+	var num9=finalnum9 = tempnum9= 0;
+	var num10=finalnum10 = tempnum10= 0;
+
+	var lis1 = document.getElementById("Star1").getElementsByTagName("li");
+	var lis2 = document.getElementById("Star2").getElementsByTagName("li");
+	var lis3 = document.getElementById("Star3").getElementsByTagName("li");
+	var lis4 = document.getElementById("Star4").getElementsByTagName("li");
+	var lis5 = document.getElementById("Star5").getElementsByTagName("li");
+	var lis6 = document.getElementById("Star6").getElementsByTagName("li");
+	var lis7 = document.getElementById("Star7").getElementsByTagName("li");
+	var lis8 = document.getElementById("Star8").getElementsByTagName("li");
+	var lis9 = document.getElementById("Star9").getElementsByTagName("li");
+	var lis10 = document.getElementById("Star10").getElementsByTagName("li");
+
+	//num:传入点亮星星的个数
+	//finalnum:最终点亮星星的个数
+	//tempnum:一个中间值
+	function fnShow1(num1) {
+ 		finalnum1= num1 || tempnum1;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis1.length; i++) {
+  			lis1[i].className = i < finalnum1? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis1.length; i++) {
+			lis1[i - 1].index = i;
+ 			lis1[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow1(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis1[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow1(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis1[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum1 = this.index;
+ 			console.log('tempnum1=' + tempnum1);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow2(num2) {
+ 		finalnum2= num2 || tempnum2;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis2.length; i++) {
+  			lis2[i].className = i < finalnum2? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis2.length; i++) {
+			lis2[i - 1].index = i;
+ 			lis2[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow2(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis2[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow2(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis2[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum2 = this.index;
+ 			console.log('tempnum2=' + tempnum2);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow3(num3) {
+ 		finalnum3= num3 || tempnum3;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis3.length; i++) {
+  			lis3[i].className = i < finalnum3? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis3.length; i++) {
+			lis3[i - 1].index = i;
+ 			lis3[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow3(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis3[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow3(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis3[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum3 = this.index;
+ 			console.log('tempnum3=' + tempnum3);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow4(num4) {
+ 		finalnum4= num4 || tempnum4;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis4.length; i++) {
+  			lis4[i].className = i < finalnum4? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis4.length; i++) {
+			lis4[i - 1].index = i;
+ 			lis4[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow4(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis4[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow4(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis4[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum4 = this.index;
+ 			console.log('tempnum4=' + tempnum4);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow5(num5) {
+ 		finalnum5= num5 || tempnum5;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis5.length; i++) {
+  			lis5[i].className = i < finalnum5? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis5.length; i++) {
+			lis5[i - 1].index = i;
+ 			lis5[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow5(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis5[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow5(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis5[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum5 = this.index;
+ 			console.log('tempnum5=' + tempnum5);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow6(num6) {
+ 		finalnum6= num6 || tempnum6;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis6.length; i++) {
+  			lis6[i].className = i < finalnum6? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis6.length; i++) {
+			lis6[i - 1].index = i;
+ 			lis6[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow6(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis6[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow6(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis6[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum6 = this.index;
+ 			console.log('tempnum6=' + tempnum6);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow7(num7) {
+ 		finalnum7= num7 || tempnum7;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis7.length; i++) {
+  			lis7[i].className = i < finalnum7? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis7.length; i++) {
+			lis7[i - 1].index = i;
+ 			lis7[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow7(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis7[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow7(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis7[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum7 = this.index;
+ 			console.log('tempnum7=' + tempnum7);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow8(num8) {
+ 		finalnum8= num8 || tempnum8;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis8.length; i++) {
+  			lis8[i].className = i < finalnum8? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis8.length; i++) {
+			lis8[i - 1].index = i;
+ 			lis8[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow8(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis8[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow8(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis8[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum8 = this.index;
+ 			console.log('tempnum8=' + tempnum8);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow9(num9) {
+ 		finalnum9= num9 || tempnum9;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis9.length; i++) {
+  			lis9[i].className = i < finalnum9? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis9.length; i++) {
+			lis9[i - 1].index = i;
+ 			lis9[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow9(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis9[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow9(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis9[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum9 = this.index;
+ 			console.log('tempnum9=' + tempnum9);
+ 			btnContinue();
+ 		}
+	}
+	function fnShow10(num10) {
+ 		finalnum10= num10 || tempnum10;//如果传入的num为0，则finalnum取tempnum的值
+ 		for (var i = 0; i < lis10.length; i++) {
+  			lis10[i].className = i < finalnum10? "light" : "";//点亮星星就是加class为light的样式
+		}
+		}
+		for (var i = 1; i <= lis10.length; i++) {
+			lis10[i - 1].index = i;
+ 			lis10[i - 1].onmouseover = function() { //鼠标经过点亮星星。
+  			fnShow10(this.index);//传入的值为正，就是finalnum
+		}	
+ 		lis10[i - 1].onmouseout = function() { //鼠标离开时星星变暗
+  			fnShow10(0);//传入值为0，finalnum为tempnum,初始为0
+		}
+ 		lis10[i - 1].onclick = function() { //鼠标点击,同时会调用onmouseout,改变tempnum值点亮星星
+ 			tempnum10 = this.index;
+ 			console.log('tempnum10=' + tempnum10);
+ 			btnContinue();
+ 		}
+	}
+	
+	function btnContinue(){
+		if(tempnum1 != 0 &&tempnum2 != 0 &&tempnum3 != 0 &&tempnum4 != 0 &&tempnum5 != 0 &&tempnum6 != 0 &&tempnum7 != 0 &&tempnum8 != 0 &&tempnum9 != 0 &&tempnum10 != 0 ){
+			$('#continueBtn').attr("disabled", false);
+			document.getElementById('continueBtn').style.backgroundColor = "#EE3B3B";
+			document.getElementById('continueBtn').style.color = '#fff';
+		}
+	}
+
+</script>
+</html>
