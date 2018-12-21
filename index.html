@@ -838,7 +838,7 @@
 <script type="text/javascript">
 	//initialize the Google Map locations and labels
 	var locations;
-	var labels;
+	var labels = [];
 	var test;
 	locations = [
 		{lat: 40.694034, lng: -73.987199},
@@ -882,7 +882,7 @@
 					picDiv.style.background='url('+path+')';
 					nameDiv.innerHTML = infoArray[0];
 					cateDiv.innerHTML = infoArray[3];
-					//set location on map
+					//set location and assign label names on map
 					locations[i] = new google.maps.LatLng(infoArray[1],infoArray[2]);
 					labels[i] = infoArray[0];
 					ratingDiv.innerHTML = rating.toString().substr(0, 3);
