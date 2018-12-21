@@ -500,9 +500,9 @@
 
 		<div id="RecList" class="RecPiece">
 			<div class="RecPic"></div>
-			<div class="RecName">MacDonalds'</div>
-			<div class="RecCate">Food</div>
-			<div class="RecRating">5.5</div>
+			<div class="RecName">Data processing...</div>
+			<div class="RecCate">Please wait...</div>
+			<div class="RecRating"></div>
 		</div></div>
 	<div id='DetailPanel' class="DetailPanelClass">
 		<div class="DetailPic">
@@ -517,7 +517,7 @@
 					<div class="ReviewName">Jeff Bezos</div>
 					<div class="ReviewTime">Just now</div>
 					<div class="ReviewRate">10</div>
-					<div class="ReviewText">Welcome to Where4Fun. This is where you're gonna find your ideal places to have fun! Enjoy!</div>
+					<div class="ReviewText">Welcome to Where4Fun. This is where you're gonna find your ideal places to have fun! Enjoy!<br/>If you are a new user, please note that the data initialization takes about 3-5 minutes. Thanks for your patience.</div>
 				</div>
 			</div>
 		</div>
@@ -784,8 +784,8 @@
 <script type="text/javascript">
 	//Initailize the array of results
 	var resultArray;
-	var ele=document.getElementsByClassName("b")[0];
-	var ele2=document.getElementsByClassName("c")[0];
+	var ele = document.getElementsByClassName("b")[0];
+	var ele2 = document.getElementsByClassName("c")[0];
 	//Suppose initialization always occur
 	ele.classList.add("v");
 	ele2.classList.add("v");
@@ -825,15 +825,45 @@
 		//POST the initData
 		apigClient.getRecommendPost(null, body).then(function(result){
         		//a success callback
-        		resultArray = result.data;
-        		console.log(resultArray);
-        		updateRecList();
+        		// resultArray = result.data;
+        		// console.log(resultArray);
+        		// updateRecList();
+        		alert("Due to the great volume of the raw data, we are not able to offer recommendations immediately. The data processing takes about 3-5 minutes. We will alert you when ready. Thank you for your patience!");
+        		tryGetResponse();
 			}).catch( function(result){
         		//an error callback
         		// console.log("Error!" + result);
     	});
 	}
 </script>
+<!-- script for setting up a timer to get response from APIGateway -->
+<script type="text/javascript">
+	var timer;
+	function tryGetResponse(){
+		timer = window.setInterval("getResponse()", 3000);
+	}
+	//create a HTTP client to excute GET method
+	
+	function getResponse(){
+		log('getResponse now running');
+		var url1 = "https://b8alhrutt2.execute-api.us-east-1.amazonaws.com/prod/get-file";
+		var client = new HttpClient();
+        client.get(url1, function(response){
+        	var responseJSON = JSON.parse(response);
+        	log(responseJSON);
+        	//send requests repeatly until receiving actual data
+        	if(responseJSON.toString() != 'filenotexist'){
+        		//stop the timer;
+        		var timerStopper = window.clearInterval(timer);
+        		resultArray = responseJSON;
+        		log('new method now gets data:'+responseJSON);
+        		alert('Your recommendations are now generated. Thanks for your time and please enjoy!');
+        		updateRecList();
+        	}
+        });
+	}
+</script>
+
 <!-- script for updating recommendation list -->
 <script type="text/javascript">
 	//initialize the Google Map locations and labels
@@ -859,6 +889,10 @@
 			(function(i){
 				var current = resultArray[i];
 				var infoArray = current[0] == null ? temp : current[0];
+				//set location and assign label names on map
+				locations[i] = new google.maps.LatLng(infoArray[1],infoArray[2]);
+				labels[i] = infoArray[0];
+				initMap();
 				getPhotoRefer(infoArray[0], function(){
 					log(i);
 					var photoRefer = test;
@@ -874,6 +908,7 @@
 					cateDiv.className = "RecCate";
 					ratingDiv.className = "RecRating";
 					pieceDiv.className = "RecPiece";
+
 					if(photoRefer == "no pic"){
 						path = "img/icon_small.png";
 					}else{
@@ -882,9 +917,6 @@
 					picDiv.style.background='url('+path+')';
 					nameDiv.innerHTML = infoArray[0];
 					cateDiv.innerHTML = infoArray[3];
-					//set location and assign label names on map
-					locations[i] = new google.maps.LatLng(infoArray[1],infoArray[2]);
-					labels[i] = infoArray[0];
 					ratingDiv.innerHTML = rating.toString().substr(0, 3);
 					pieceDiv.appendChild(picDiv);
 					pieceDiv.appendChild(nameDiv);
@@ -899,12 +931,11 @@
 					}
 					fatherDiv.appendChild(pieceDiv);
 					log(photoRefer);
-					// log(locations);
-					initMap();
 			});
 			})(i);
 		}
-
+		log(locations);
+		log(labels);
 	}
 	
 	function getDetailId(name){
@@ -1020,7 +1051,9 @@
 		pic.style.background ='url('+path+') no-repeat center center';
 	}
 	function getPhotoRefer(name, callback){
-		var parseName = name.toString().trim().replace(/ /g,"%20");
+		var parseName = name.toString().trim().replace(/[\'\"]/g, '');
+		var parseName = parseName.toString().trim().replace(/ /g,'%20');
+		console.log('parsename-------------' + parseName);
 		var url = "https://cors.io/?https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input="+parseName+"&inputtype=textquery&fields=photos&key=AIzaSyDls0UA_hCNEbgwc_eoP-QL_pCm1NKwfSc";
 		console.log(url);
 		var refer;
@@ -1028,7 +1061,7 @@
         client.get(url, function(response){
         	var responseJSON = JSON.parse(response);
         	// log(responseJSON);
-        	if(responseJSON.status == "OK"){
+        	if(responseJSON.status == "OK" && responseJSON.candidates[0].length != 0 && responseJSON.candidates[0].hasOwnProperty("photos")){
         		refer = responseJSON.candidates[0].photos[0].photo_reference;
         		test = refer;
         		callback();
@@ -1058,6 +1091,7 @@
 	}
 
 </script>
+
 <!-- script for Lex service -->
 <script type="text/javascript">
 	// set the focus to the input box
@@ -1151,6 +1185,7 @@
 			conversationDiv.scrollTop = conversationDiv.scrollHeight;
 		}
 	</script>
+
 <!-- GoogleMap API script -->
 <script>
 	var markers;
