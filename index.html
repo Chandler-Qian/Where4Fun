@@ -820,19 +820,15 @@
 		//Test the initData
 		console.log(initData);
 		var body = {
-			"arg": initData
+			"args": initData
 		};
 		//POST the initData
 		apigClient.getRecommendPost(null, body).then(function(result){
-        		//a success callback
-        		// resultArray = result.data;
-        		// console.log(resultArray);
-        		// updateRecList();
+        		log(body);
         		alert("Due to the great volume of the raw data, we are not able to offer recommendations immediately. The data processing takes about 3-5 minutes. We will alert you when ready. Thank you for your patience!");
         		tryGetResponse();
-			}).catch( function(result){
-        		//an error callback
-        		// console.log("Error!" + result);
+			}).catch(function(result){
+				console.log("Error with getRecommendPost!" + result);
     	});
 	}
 </script>
@@ -1115,34 +1111,33 @@
 				// print user input on UI.
 				showRequest(wisdom, timestamp);
 
-				// // construct message json section
-				// var message = [
-				// {	"type": "n/a", 
-				// "unstructured":
-				// {"id": "n/a", 
-				// "text": wisdom, 
-				// "timestamp": "n/a"}}
-				// ];
-				// // construct request body
-				// var body = {
-				// 	messages: message
-				// };
-				// // post request and receive response
-				// apigClient.chatbotPost(null, body).then(function(result){
-    //     			//a success callback
-    //     			console.log(result);
-    //     			var obj = JSON.parse(result.data);
-    //     			var responseResult = JSON.stringify(obj.messages[0].unstructured.text);
-    //     			var responseTime = JSON.stringify(obj.messages[0].unstructured.timestamp);
-    //     			console.log(responseTime.replace(/['"]+/g, ''));
-    //     			showResponse(responseResult.replace(/['"]+/g, ''), responseTime.replace(/['"]+/g, ''));
-
-    //     		}).catch( function(result){
-    //     			//an error callback
-    //     			var responseResult = JSON.stringify(result);
-    //     			showError(responseResult);
-    //     			console.log(result);
-    //     		});
+				// construct message json section
+				var message = [
+				{	"type": "n/a", 
+				"unstructured":
+				{"id": "n/a", 
+				"text": wisdom, 
+				"timestamp": "n/a"}}
+				];
+				// construct request body
+				var body = {
+					messages: message
+				};
+				// post request and receive response
+				apigClient.lexPost(null, body).then(function(result){
+        			//a success callback
+        			console.log(result);
+        			var obj = result.data;
+        			var responseResult = JSON.stringify(obj.messages[0].unstructured.text);
+        			var responseTime = JSON.stringify(obj.messages[0].unstructured.timestamp);
+        			console.log(responseTime.replace(/['"]+/g, ''));
+        			showResponse(responseResult.replace(/['"]+/g, ''), responseTime.replace(/['"]+/g, ''));
+        		}).catch( function(result){
+        			//an error callback
+        			var responseResult = JSON.stringify(result);
+        			showError(responseResult);
+        			console.log(result);
+        		});
         		wisdomText.value = '';
         		wisdomText.locked = false;
         	}
